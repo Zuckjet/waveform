@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'amplitude.dart';
+import 'waveform_bar_style.dart';
 
 /// A widget that represents a single bar in a waveform visualisation.
 ///
@@ -12,19 +13,19 @@ class WaveFormBar extends StatelessWidget {
   /// [amplitude] is the amplitude value that determines the height of the bar.
   /// [animation] is an optional animation for the bar.
   /// [maxHeight] is the maximum height multiplier for the bar. Defaults to 2.
-  /// [color] is the color of the bar. Defaults to cyan.
+  /// [style] is the styling for the bar.
   const WaveFormBar({
     super.key,
     required this.amplitude,
     this.animation,
     this.maxHeight = 2,
-    this.color = Colors.cyan,
+    this.style = const WaveFormBarStyle(),
   });
 
   final Amplitude amplitude; // The amplitude value for the bar height.
   final Animation<double>? animation; // Optional animation for the bar.
   final int maxHeight; // Maximum height multiplier for the bar.
-  final Color color; // Color of the bar.
+  final WaveFormBarStyle style; // Styling for the bar.
 
   /// Builds the waveform bar widget.
   ///
@@ -32,13 +33,13 @@ class WaveFormBar extends StatelessWidget {
   /// constrained to a range between 1 and 160, and multiplied by [maxHeight].
   Widget _buildWaveFormBar() {
     return Container(
-      width: 4,
+      width: style.width,
       height: (160 / amplitude.current.abs().clamp(1, 160)) * maxHeight,
       decoration: BoxDecoration(
-        color: color,
+        color: style.color,
         borderRadius: BorderRadius.circular(10),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 2),
+      margin: style.margin,
     );
   }
 
