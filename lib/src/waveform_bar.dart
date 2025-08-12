@@ -33,11 +33,20 @@ class WaveFormBar extends StatelessWidget {
   /// The height of the bar is calculated based on the amplitude value,
   /// constrained to a range between 1 and 160, and multiplied by [maxHeight].
   Widget _buildWaveFormBar() {
-    // 解决方案2: 简单的幂函数缩放
     double amplitudeValue = amplitude.current.abs().clamp(0.1, 160.0);
+    // 根据不同的音频强度调整缩放
+    double scaledAmplitude;
 
-    // 使用幂函数提高敏感度，指数越小对小值越敏感
-    double scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 6;
+    if (amplitude.current >= -40) {
+      // 不说话的时候（-40及以上），减少3倍左右
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 2;
+    } else if (amplitude.current >= -30) {
+      // 小声说话的时候（-30到-40之间），适当增加1/2
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 8;
+    } else {
+      // 正常或大声说话，使用原来的缩放
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 6;
+    }
 
     return Container(
       width: style.width,
