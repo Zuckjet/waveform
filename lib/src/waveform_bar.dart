@@ -37,7 +37,7 @@ class WaveFormBar extends StatelessWidget {
     double amplitudeValue = amplitude.current.abs().clamp(0.1, 160.0);
 
     // 使用幂函数提高敏感度，指数越小对小值越敏感
-    double scaledAmplitude = math.pow(amplitudeValue / 160.0, 0.3) * 100;
+    double scaledAmplitude = math.pow(amplitudeValue / 160.0, 0.7) * 100;
 
     return Container(
       width: style.width,
