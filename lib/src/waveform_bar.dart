@@ -37,10 +37,10 @@ class WaveFormBar extends StatelessWidget {
     // 根据不同的音频强度调整缩放
     double scaledAmplitude;
 
-    if (amplitude.current >= -40) {
+    if (amplitude.current <= -40) {
       // 不说话的时候（-40及以上），减少3倍左右
       scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 2;
-    } else if (amplitude.current >= -30) {
+    } else if (amplitude.current <= -28) {
       // 小声说话的时候（-30到-40之间），适当增加1/2
       scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 8;
     } else {
