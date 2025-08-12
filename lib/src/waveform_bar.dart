@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'amplitude.dart';
 import 'waveform_bar_style.dart';
+import 'dart:math' as math;
 
 /// A widget that represents a single bar in a waveform visualisation.
 ///
@@ -32,9 +33,15 @@ class WaveFormBar extends StatelessWidget {
   /// The height of the bar is calculated based on the amplitude value,
   /// constrained to a range between 1 and 160, and multiplied by [maxHeight].
   Widget _buildWaveFormBar() {
+    // 解决方案2: 简单的幂函数缩放
+    double amplitudeValue = amplitude.current.abs().clamp(0.1, 160.0);
+
+    // 使用幂函数提高敏感度，指数越小对小值越敏感
+    double scaledAmplitude = math.pow(amplitudeValue / 160.0, 0.3) * 100;
+
     return Container(
       width: style.width,
-      height: (160 / amplitude.current.abs().clamp(1, 160)) * maxHeight,
+      height: scaledAmplitude * maxHeight,
       decoration: BoxDecoration(
         color: style.color,
         borderRadius: BorderRadius.circular(10),
