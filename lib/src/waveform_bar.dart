@@ -33,19 +33,25 @@ class WaveFormBar extends StatelessWidget {
   /// The height of the bar is calculated based on the amplitude value,
   /// constrained to a range between 1 and 160, and multiplied by [maxHeight].
   Widget _buildWaveFormBar() {
-    double amplitudeValue = amplitude.current.abs().clamp(0.1, 160.0);
+    double amplitudeValue = amplitude.current.abs().clamp(1, 160.0);
     // 根据不同的音频强度调整缩放
     double scaledAmplitude;
 
-    if (amplitude.current <= -35) {
-      // 不说话的时候（-40及以上），减少3倍左右
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 2;
-    } else if (amplitude.current <= -25) {
-      // 小声说话的时候（-30到-40之间），适当增加1/2
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 5;
+    if (amplitude.current <= -50) {
+      // 环境噪音或静音（-50dB及以下），高度降为原来的1/3
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.8) * 1.5;
+    } else if (amplitude.current <= -40) {
+      // 非常轻微的声音（-40到-50dB），稍微增加
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 2.5;
+    } else if (amplitude.current <= -30) {
+      // 小声说话（-30到-40dB），适中高度
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.6) * 4;
+    } else if (amplitude.current <= -20) {
+      // 正常说话（-20到-30dB），正常高度
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.5) * 5;
     } else {
-      // 正常或大声说话，使用原来的缩放
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 5;
+      // 大声说话或音乐（-20dB以上），最大高度
+      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.4) * 6;
     }
 
     return Container(
