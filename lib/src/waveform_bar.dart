@@ -19,7 +19,7 @@ class WaveFormBar extends StatelessWidget {
     super.key,
     required this.amplitude,
     this.animation,
-    this.maxHeight = 2,
+    this.maxHeight = 4,
     this.style = const WaveFormBarStyle(),
   });
 
@@ -37,21 +37,27 @@ class WaveFormBar extends StatelessWidget {
     // 根据不同的音频强度调整缩放
     double scaledAmplitude;
 
-    if (amplitude.current <= -50) {
-      // 环境噪音或静音（-50dB及以下），高度降为原来的1/3
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.8) * 1.5;
-    } else if (amplitude.current <= -40) {
-      // 非常轻微的声音（-40到-50dB），稍微增加
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.7) * 2.5;
+    // 使用线性映射 + 对数缩放的组合方式
+    if (amplitude.current <= -36) {
+      // 环境噪音或静音，设置最小基线高度
+      scaledAmplitude = 0.5; // 固定最小高度
     } else if (amplitude.current <= -30) {
-      // 小声说话（-30到-40dB），适中高度
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.6) * 4;
+      // 非常轻微的声音，略高于基线
+      double normalizedValue = (amplitude.current + 50) / 10; // 0-1之间
+      scaledAmplitude = 0.5 + normalizedValue * 0.8; // 0.5-1.3
     } else if (amplitude.current <= -20) {
-      // 正常说话（-20到-30dB），正常高度
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.5) * 5;
+      // 小声说话，明显增加
+      double normalizedValue = (amplitude.current + 40) / 10; // 0-1之间
+      scaledAmplitude = 1.3 + normalizedValue * 1.5; // 1.3-2.8
+    } else if (amplitude.current <= -10) {
+      // 正常说话，显著高度
+      double normalizedValue = (amplitude.current + 30) / 10; // 0-1之间
+      scaledAmplitude = 2.8 + normalizedValue * 2.2; // 2.8-5.0
     } else {
-      // 大声说话或音乐（-20dB以上），最大高度
-      scaledAmplitude = math.pow(160.0 / amplitudeValue, 0.4) * 6;
+      // 大声说话或音乐，最大高度
+      double normalizedValue =
+          math.min((amplitude.current + 20) / 20, 1.0); // 限制在0-1
+      scaledAmplitude = 5.0 + normalizedValue * 3.0; // 5.0-8.0
     }
 
     return Container(
