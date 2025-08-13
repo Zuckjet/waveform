@@ -40,24 +40,24 @@ class WaveFormBar extends StatelessWidget {
     // 使用线性映射 + 对数缩放的组合方式
     if (amplitude.current <= -36) {
       // 环境噪音或静音，设置最小基线高度
-      scaledAmplitude = 2; // 固定最小高度
+      scaledAmplitude = 3; // 固定最小高度
     } else if (amplitude.current <= -26) {
       // 非常轻微的声音，略高于基线
       double normalizedValue = (amplitude.current + 50) / 10; // 0-1之间
-      scaledAmplitude = 2 + normalizedValue * 1; // 0.5-1.3
+      scaledAmplitude = 3 + normalizedValue * 2.4; // 0.5-1.3
     } else if (amplitude.current <= -20) {
       // 小声说话，明显增加
       double normalizedValue = (amplitude.current + 40) / 10; // 0-1之间
-      scaledAmplitude = 2.3 + normalizedValue * 1.5; // 1.3-2.8
+      scaledAmplitude = 5 + normalizedValue * 3.4; // 1.3-2.8
     } else if (amplitude.current <= -10) {
       // 正常说话，显著高度
       double normalizedValue = (amplitude.current + 30) / 10; // 0-1之间
-      scaledAmplitude = 2.8 + normalizedValue * 2.2; // 2.8-5.0
+      scaledAmplitude = 7 + normalizedValue * 4.6; // 2.8-5.0
     } else {
       // 大声说话或音乐，最大高度
       double normalizedValue =
           math.min((amplitude.current + 20) / 20, 1.0); // 限制在0-1
-      scaledAmplitude = 5.0 + normalizedValue * 3.0; // 5.0-8.0
+      scaledAmplitude = 5.0 + normalizedValue * 6; // 5.0-8.0
     }
 
     return Container(
