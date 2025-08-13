@@ -44,20 +44,20 @@ class WaveFormBar extends StatelessWidget {
     } else if (amplitude.current <= -26) {
       // 非常轻微的声音，略高于基线
       double normalizedValue = (amplitude.current + 50) / 10; // 0-1之间
-      scaledAmplitude = 3 + normalizedValue * 2.4; // 0.5-1.3
+      scaledAmplitude = 3 + normalizedValue * 3; // 0.5-1.3
     } else if (amplitude.current <= -20) {
       // 小声说话，明显增加
       double normalizedValue = (amplitude.current + 40) / 10; // 0-1之间
-      scaledAmplitude = 5 + normalizedValue * 3.4; // 1.3-2.8
+      scaledAmplitude = 5 + normalizedValue * 6.4; // 1.3-2.8
     } else if (amplitude.current <= -10) {
       // 正常说话，显著高度
       double normalizedValue = (amplitude.current + 30) / 10; // 0-1之间
-      scaledAmplitude = 7 + normalizedValue * 4.6; // 2.8-5.0
+      scaledAmplitude = 7 + normalizedValue * 8.6; // 2.8-5.0
     } else {
       // 大声说话或音乐，最大高度
       double normalizedValue =
           math.min((amplitude.current + 20) / 20, 1.0); // 限制在0-1
-      scaledAmplitude = 5.0 + normalizedValue * 6; // 5.0-8.0
+      scaledAmplitude = 8 + normalizedValue * 50; // 5.0-8.0
     }
 
     return Container(
